@@ -1,0 +1,3 @@
+[submodule "external/oatpp"]
+	path = external/oatpp
+	url = https://github.com/oatpp/oatpp
