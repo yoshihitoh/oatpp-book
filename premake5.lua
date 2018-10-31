@@ -18,6 +18,19 @@ workspace "oatpp-book"
             ["CLANG_CXX_LANGUAGE_STANDARD"] = "c++14";
         }
 
+project "oatpp-swagger"
+    kind "StaticLib"
+    language "C++"
+
+    includedirs {
+        "external",
+    }
+
+    files {
+        "external/oatpp-swagger/**.cpp",
+        "external/oatpp-swagger/**.hpp",
+    }
+
 project "oatpp-book"
     kind "ConsoleApp"
     language "C++"
@@ -36,5 +49,6 @@ project "oatpp-book"
     }
 
     links {
-        "oatpp"
+        "oatpp",
+        "oatpp-swagger"
     }

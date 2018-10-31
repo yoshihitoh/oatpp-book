@@ -10,9 +10,12 @@
 
 #include "db/database.hpp"
 #include "db/memory_database.hpp"
+#include "swagger_component.hpp"
 
 class AppComponent {
 public:
+  SwaggerComponent swagger_component;
+
   OATPP_CREATE_COMPONENT(std::shared_ptr<oatpp::network::ServerConnectionProvider>, serverConnectionProvider)([] {
     return oatpp::network::server::SimpleTCPConnectionProvider::createShared(8002);
   }());

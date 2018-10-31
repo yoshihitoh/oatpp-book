@@ -1,5 +1,7 @@
 #include <iostream>
 
+#include "oatpp-swagger/Controller.hpp"
+
 #include "controller/book_controller.hpp"
 #include "app_component.hpp"
 #include "logger.hpp"
@@ -14,6 +16,12 @@ static void run()
 
     auto book_controller = BookController::createShared();
     book_controller->addEndpointsToRouter(router);
+
+    auto doc_endpoints = oatpp::swagger::Controller::Endpoints::createShared();
+    doc_endpoints->pushBackAll(book_controller->getEndpoints());
+
+    auto swagger_controller = oatpp::swagger::Controller::createShared(doc_endpoints);
+    swagger_controller->addEndpointsToRouter(router);
 
     oatpp::network::server::Server server(components.serverConnectionProvider.getObject(),
                                           components.serverConnectionHandler.getObject());

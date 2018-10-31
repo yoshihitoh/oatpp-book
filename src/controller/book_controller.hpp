@@ -29,16 +29,31 @@ public:
 
 #include OATPP_CODEGEN_BEGIN(ApiController)
 
+    ENDPOINT_INFO(allBooks) {
+        info->summary = "すべての本を取得する";
+        info->addResponse<decltype(m_database->allBooks())>(Status::CODE_200, "application/json");
+    }
     ENDPOINT("GET", "api/books", allBooks) {
         return createDtoResponse(Status::CODE_200, m_database->allBooks());
     }
 
+    ENDPOINT_INFO(getBook) {
+        info->summary = "IDを指定して本を取得する";
+        info->addResponse<BookDto::ObjectWrapper>(Status::CODE_200, "application/json");
+        info->addResponse<String>(Status::CODE_404, "text/plain");
+    }
     ENDPOINT("GET", "api/books/{book_id}", getBook, PATH(Int32, book_id)) {
         const auto book = m_database->getBook(book_id);
         OATPP_ASSERT_HTTP(book, Status::CODE_404, "book not found");
         return createDtoResponse(Status::CODE_200, book);
     }
 
+    ENDPOINT_INFO(putBook) {
+        info->summary = "IDを指定して本を更新する";
+        info->addConsumes<BookDto::ObjectWrapper>("application/json");
+        info->addResponse<BookDto::ObjectWrapper>(Status::CODE_200, "application/json");
+        info->addResponse<String>(Status::CODE_404, "text/plain");
+    }
     ENDPOINT("PUT", "api/books/{book_id}", putBook,
              PATH(Int32, book_id),
              BODY_DTO(BookDto::ObjectWrapper, book_dto)) {
